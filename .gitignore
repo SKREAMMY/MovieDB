@@ -1,0 +1,77 @@
+# Build results
+bin/
+obj/
+*.dll
+*.exe
+*.app
+*.appx
+*.msi
+*.pdb
+*.cache
+*.log
+*.db
+*.sql
+
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.ncrunch* 
+*.ncrunchlocal.xml
+
+# VS Code
+.vscode/
+.history/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+*.nuspec
+
+# Rider
+.idea/
+*.ipr
+*.iws
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment
+.env
+*.env
+appsettings.Local.json
+appsettings.Development.json
+local.settings.json
+
+# Test results
+TestResults/
+coverage/
+*.trx
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# Logs
+*.log
+
+# OneDrive
+~$*
+*.lnk
