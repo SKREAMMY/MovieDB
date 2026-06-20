@@ -1,5 +1,5 @@
 import express from "express";
-import { watchMovie, reviewMovie, createMovie } from '../controllers/movieControllers.js';
+import { watchMovie, reviewMovie, createMovie, getMovieById, getAllMovies, updateMovie } from '../controllers/movieControllers.js';
 
 
 const router = express.Router();
@@ -9,9 +9,12 @@ import { adminOnly } from "../middleware/admin.js";
 
 router.use(protect);
 
-router.route('/createMovie').post(adminOnly, createMovie);
+router.route('/').get(getAllMovies).post(adminOnly, createMovie);
 
 router.post("/:id/watch", watchMovie);
 router.post("/:id/reviews", reviewMovie);
+router.put("/update/:id", adminOnly, updateMovie);
+
+router.get("/:id", getMovieById);
 
 export default router;

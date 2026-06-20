@@ -21,12 +21,12 @@ export const watchMovie = asyncHandler(async (req, res) => {
     const movie = await Movie.findById(req.params.id);
 
     if (!movie) {
-        return res.status(404);
+        res.status(404);
         throw new Error("No movie found");
     }
 
     if (movie.status !== "launched") {
-        return res.status(400);
+        res.status(400);
         throw new Error("Movie is not available yet");
     }
     const userId = req.user._id.toString();
@@ -52,16 +52,15 @@ export const watchMovie = asyncHandler(async (req, res) => {
 export const reviewMovie = asyncHandler(async (req, res) => {
 
     const { rating, comment } = req.body;
-    if (!rating || rating <= 1 && rating <= 5) {
-        return res.json({
-            message: "Rating should be between 1 to 5"
-        });
+    if (!rating || rating < 1 || rating > 5) {
+        res.status(400);
+        throw new Error("Rating should be between 1 to 5");
     }
 
     const movie = await Movie.findById(req.params.id);
 
     if (!movie || movie.status === "draft") {
-        return res.status(400);
+        res.status(400);
         throw new Error("unable to add a review");
     }
 
@@ -88,10 +87,48 @@ export const reviewMovie = asyncHandler(async (req, res) => {
             }
         )
     } else {
-        res.json({
-            message: "Movie reviewed already"
-        })
+        res.status(400);
+        throw new Error("Movie reviewed already");
     }
+});
+
+export const getMovieById = asyncHandler(async (req, res) => {
+    const movieId = req.params.id;
+    console.log("movie id is ", movieId);
+    const movie = await Movie.findById(movieId);
+    console.log("movie is ", movie);
+    res.status(200).json({
+        movie: movie
+    })
+});
+
+export const getAllMovies = asyncHandler(async (req, res) => {
+    const movies = await Movie.find({});
+    res.status(200).json({
+        movies: movies
+    })
+});
+
+export const updateMovie = asyncHandler(async (req, res) => {
+
+    // status is launched only via the launch update endpoint, not a generic update
+    const { status, ...update } = req.body;
+
+    const movie = await Movie.findByIdAndUpdate(req.params.id, update, {
+        new: true,
+        runValidators: true,
+    }).populate("actors", "name photoUrl");
+
+    if (!movie) {
+        res.status(400);
+        throw new Error("Movie not found");
+    }
+
+    console.log("modified movie is ", movie);
+    res.status(200).json({
+        message: "Movie updated successfully",
+        movie: movie
+    });
 
 
 });
