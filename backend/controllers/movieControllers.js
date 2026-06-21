@@ -99,14 +99,14 @@ export const getMovieById = asyncHandler(async (req, res) => {
     console.log("movie is ", movie);
     res.status(200).json({
         movie: movie
-    })
+    });
 });
 
 export const getAllMovies = asyncHandler(async (req, res) => {
     const movies = await Movie.find({});
     res.status(200).json({
         movies: movies
-    })
+    });
 });
 
 export const updateMovie = asyncHandler(async (req, res) => {
@@ -130,5 +130,29 @@ export const updateMovie = asyncHandler(async (req, res) => {
         movie: movie
     });
 
+});
 
+export const launchMovie = asyncHandler(async (req, res) => {
+    console.log("inside launch movie");
+    const movieId = req.params.id;
+    const movie = await Movie.findById(movieId);
+    if (!movie) {
+        res.status(400);
+        throw new Error("Movie not found");
+    }
+
+    if (movie.status === "launched") {
+        res.status(400);
+        throw new Error("Movie is already launched");
+    }
+
+    movie.status = 'launched';
+    movie.createdAt = new Date();
+    await movie.save();
+
+
+    res.json({
+        message: `"${movie.title}" launched.`,
+        movie,
+    });
 });
