@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import authRoutes from "./routes/authRoutes.js";
 import movieRoutes from "./routes/movieRoutes.js";
 import actorRoutes from "./routes/actorRoutes.js";
+import notificationRoutes from './routes/notificationRoutes.js';
 
 dotenv.config();
 await connectDB();
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/movies", movieRoutes);
 app.use("/api/actors", actorRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 
 
